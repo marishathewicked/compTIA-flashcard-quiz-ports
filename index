@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompTIA Flashcard Quiz</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f4f8;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .flashcard-container {
+            background-color: #E6D1F3; /* Light purple color */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%; /* 90% of screen width for mobile responsiveness */
+            max-width: 400px; /* Max width for larger screens */
+            text-align: center;
+            padding: 40px;
+            transition: transform 0.4s ease-in-out;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .flashcard-container.flip {
+            transform: rotateY(0deg);
+        }
+
+        .question, .answer {
+            font-size: 26px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .answer {
+            display: none;
+        }
+
+        .flashcard-container.flip .answer {
+            display: block;
+        }
+
+        .flashcard-container.flip .question {
+            display: none;
+        }
+
+        .btn1 {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background-color 0.3s ease;
+            width: 48%;
+        }
+       .btn2 {
+            background-color: #6fe373;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background-color 0.3s ease;
+            width: 48%;
+        }
+        .btn1:hover {
+            background-color: #0056b3;
+        }
+       .btn2:hover {
+            background-color: #4da350;
+        }
+
+        .explanation {
+            font-size: 20px;
+            color: #555;
+            display: none;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .flashcard-container.flip .explanation {
+            display: block;
+        }
+
+        /* Mobile responsive styles */
+        @media (max-width: 600px) {
+            .question, .answer {
+                font-size: 20px;
+            }
+            .btn1 {
+                font-size: 14px;
+                padding: 8px 16px;
+                width: 100%;
+                margin: 5px 0;
+            }
+             .btn2 {
+                font-size: 14px;
+                padding: 8px 16px;
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="flashcard-container" id="flashcard">
+    <div class="question" id="question">SSO</div>
+    <div class="answer" id="answer">Single Sign-On</div>
+    <div class="explanation" id="explanation">Single Sign-On allows a user to authenticate once and gain access to multiple systems without needing to log in again for each one.</div>
+    <button class="btn1" onclick="flipCard()">Flip</button>
+    <button class="btn1" onclick="nextCard()">Next</button>
+    <button class="btn2" onclick="markAsLearned()">Learned</button>
+<button class="btn2 hidden" id="restartBtn" onclick="restartQuiz()">Restart</button>
+</div>
+
+<script>
+    const flashcards = [
+       {
+            question: "20",
+            answer: "TCP",
+            explanation: "File Transfer Protocol (FTP)—Data connection"
+        },
+        {
+            question: "21",
+            answer: "TCP",
+            explanation: "File Transfer Protocol (FTP)—Control connection"
+        },
+
+        {
+            question: "22",
+            answer: "TCP",
+            explanation: "Secure Shell (SSH)"
+        },
+        {
+            question: "23",
+            answer: "TCP",
+            explanation: "Telnet"
+        },
+        {
+    question: "25",
+    answer: "TCP",
+    explanation: "Simple Mail Transfer Protocol (SMTP)"
+},
+{
+    question: "53",
+    answer: "TCP/UDP",
+    explanation: "Domain Name System (DNS)"
+},
+{
+    question: "67",
+    answer: "UDP",
+    explanation: "Dynamic Host Configuration Protocol (DHCP) Server"
+},
+{
+    question: "68",
+    answer: "UDP",
+    explanation: "DHCP Client"
+},
+{
+    question: "80",
+    answer: "TCP",
+    explanation: "HyperText Transfer Protocol (HTTP)"
+},
+{
+    question: "110",
+    answer: "TCP",
+    explanation: "Post Office Protocol (POP)"
+},
+{
+    question: "137-139",
+    answer: "UDP/TCP",
+    explanation: "NetBIOS over TCP/IP"
+},
+{
+    question: "143",
+    answer: "Pin Grid Array.",
+    explanation: "PGA is a type of CPU socket where the processor has pins that fit into corresponding holes in the socket on the motherboard."
+},
+{
+    question: "ZIF",
+    answer: "Zero Insertion Force.",
+    explanation: "ZIF is a type of CPU socket that allows a processor to be inserted without applying force, making installation and removal easier."
+},
+{
+    question: "CMOS",
+    answer: "Complementary Metal-Oxide-Semiconductor.",
+    explanation: "CMOS is a technology used for constructing integrated circuits, including memory chips and processors."
+},
+{
+    question: "CLRTC",
+    answer: "Clear RTC.",
+    explanation: "CLRTC is a process used to reset the Real-Time Clock (RTC) settings, often used to fix issues like incorrect system time."
+},
+{
+    question: "BSoD",
+    answer: "BSoD stands for Blue Screen of Death.",
+    explanation: "BSoD is a system error in Windows that results in a stop error, usually caused by critical issues like hardware failure or driver problems."
+},
+{
+    question: "SIMM",
+    answer: "Single Inline Memory Module.",
+    explanation: "SIMM is a type of memory module with a single row of pins used in older computer systems for adding RAM."
+},
+{
+    question: "SDRAM",
+    answer: "Synchronous Dynamic Random Access Memory.",
+    explanation: "SDRAM is a type of memory that is synchronized with the system clock, improving performance compared to earlier types of DRAM."
+},
+{
+    question: "DIMM",
+    answer: "Dual Inline Memory Module.",
+    explanation: "DIMM is a type of memory module that has separate electrical contacts on both sides of the module, commonly used in modern computer systems."
+},
+        {
+    question: "SO-DIMM",
+    answer: "Small Outline Dual Inline Memory Module.",
+    explanation: "SO-DIMM is a smaller version of the standard DIMM, commonly used in laptops and compact devices due to its smaller size."
+},
+{
+    question: "DDR",
+    answer: "Double Data Rate.",
+    explanation: "DDR is a type of SDRAM that transfers data on both the rising and falling edges of the clock signal, improving data transfer rates."
+},
+{
+    question: "XMP",
+    answer: "Extreme Memory Profile.",
+    explanation: "XMP is a feature of DDR memory that allows users to easily overclock their memory modules by using predefined memory profiles."
+},
+{
+    question: "Latency",
+    answer: "Latency refers to the delay between sending a request and receiving a response.",
+    explanation: "In computing, latency can be the time taken for data to travel between devices or the delay between user input and system output."
+},
+{
+    question: "ECC RAM",
+    answer: "Error-Correcting Code Random Access Memory.",
+    explanation: "ECC RAM is a type of memory that detects and corrects internal data corruption, ensuring data integrity in critical applications."
+},
+{
+    question: "Buffered RAM",
+    answer: "Buffered RAM includes a buffer between the memory and the system's memory controller.",
+    explanation: "Buffered RAM improves the stability of large memory configurations by reducing the load on the memory controller, often used in servers and workstations."
+},
+{
+    question: "Swap file",
+    answer: "A swap file is a space on the hard drive used as virtual memory.",
+    explanation: "When physical RAM is full, the operating system uses the swap file to store data temporarily, allowing for more processes to run."
+},
+{
+    question: "Disk thrashing",
+    answer: "Disk thrashing occurs when the system spends more time reading and writing to the disk than performing actual tasks.",
+    explanation: "This usually happens when there is insufficient RAM or when a system is running too many processes, leading to high disk activity and slow performance."
+},
+{
+    question: "SPD",
+    answer: "Serial Presence Detect.",
+    explanation: "SPD is a feature in modern RAM modules that stores information about the memory's size, speed, and configuration, allowing the motherboard to detect and optimize its settings."
+},
+{
+    question: "POST",
+    answer: "Power-On Self-Test.",
+    explanation: "POST is the diagnostic process that occurs when a computer is powered on, checking the hardware components like memory and CPU to ensure everything is functioning properly."
+},
+{
+    question: "Service mode",
+    answer: "Service mode refers to a special state in which a system allows technicians to troubleshoot or configure hardware or software.",
+    explanation: "Service mode is typically used in situations like system repairs or software installation where normal user access is restricted."
+},
+{
+    question: "Page fault",
+    answer: "A page fault occurs when the system tries to access data not currently in physical memory.",
+    explanation: "When a page fault happens, the system will fetch the required data from the disk and load it into RAM, causing a temporary delay."
+},
+{
+    question: "NMI",
+    answer: "Non-Maskable Interrupt.",
+    explanation: "NMI is a hardware interrupt that cannot be ignored by the processor, often used for urgent errors like hardware failures that require immediate attention."
+},
+{
+    question: "BSoD",
+    answer: "Blue Screen of Death.",
+    explanation: "BSoD is an error screen displayed by Windows when the operating system encounters a fatal system error, often caused by hardware or driver issues."
+},
+{
+    question: "SPoD",
+    answer: "Spinning Pizza of Death.",
+    explanation: "SPoD is a colloquial term used to describe the spinning beachball cursor in macOS, which indicates the system is busy or unresponsive."
+}
+
+       
+
+    ];
+
+   let currentCard = 0;
+    let learnedCards = JSON.parse(localStorage.getItem('learnedCards')) || [];
+
+    const questionEl = document.getElementById("question");
+    const answerEl = document.getElementById("answer");
+    const explanationEl = document.getElementById("explanation");
+    const flashcardEl = document.getElementById("flashcard");
+    const restartBtn = document.getElementById("restartBtn");
+
+    function updateCard() {
+        if (flashcards.length === learnedCards.length) {
+            questionEl.textContent = "All cards learned! 🎉";
+            answerEl.textContent = "";
+            explanationEl.textContent = "";
+            restartBtn.classList.remove("hidden");
+            return;
+        } else {
+            restartBtn.classList.add("hidden");
+        }
+
+        while (learnedCards.includes(currentCard)) {
+            currentCard = (currentCard + 1) % flashcards.length;
+        }
+        questionEl.textContent = flashcards[currentCard].question;
+        answerEl.textContent = flashcards[currentCard].answer;
+        explanationEl.textContent = flashcards[currentCard].explanation;
+        flashcardEl.classList.remove("flip");
+    }
+
+    function flipCard() {
+        flashcardEl.classList.toggle("flip");
+    }
+
+    function nextCard() {
+        currentCard = (currentCard + 1) % flashcards.length;
+        updateCard();
+    }
+
+    function markAsLearned() {
+        if (!learnedCards.includes(currentCard)) {
+            learnedCards.push(currentCard);
+            localStorage.setItem('learnedCards', JSON.stringify(learnedCards));
+        }
+        nextCard();
+    }
+
+    function restartQuiz() {
+        learnedCards = [];
+        localStorage.removeItem('learnedCards');
+        currentCard = 0;
+        updateCard();
+    }
+
+    // Initialize the first card
+    updateCard();
+</script>
+
+</body>
+</html>
