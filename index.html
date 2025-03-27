@@ -218,10 +218,11 @@
     question: "3389",
     answer: "TCP",
     explanation: "Remote Desktop Protocol (RDP)"
+},
 
     ];
 
-    let currentCard = 0;
+   let currentCard = 0;
     let learnedCards = JSON.parse(localStorage.getItem('learnedCards')) || [];
 
     const questionEl = document.getElementById("question");
