@@ -10,7 +10,7 @@ Start Again: Once all cards are marked as "learned," the option to start a new r
 How to Use
 Visit the live version of the flashcard quiz:
 
-https://marishathewicked.github.io/compTIA-flashcard-quiz/
+
 
 Click on the "Flip" button to reveal the answer to each question.
 
